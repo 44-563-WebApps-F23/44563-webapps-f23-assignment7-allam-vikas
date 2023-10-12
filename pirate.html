@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Pirate</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" 
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: antiquewhite;
+        }
+        h1 {
+            color: olive;
+        }
+        #instructions {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: beige;
+        }
+        #locations{
+            font-size: 16px;
+            color:darkgrey;
+        }
+        
+        #penalty {
+            font-size: 16px;
+            color: indigo;
+        }
+        #help {
+            font-size: 14px;
+            margin-top: 20px;
+            color: black;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5,0fr);
+            gap: 10px;
+            margin: 5px auto;
+            width: 30%;
+        }
+
+        .location {
+            width: 68px;
+            height: 65px;
+            border: 1px solid black;
+            text-align: center;
+            background-image: url('./hiddentreasure.jpg');
+            background-size: cover;
+        }
+        .treasure {
+            background-image: url('./treasure.jpg'); 
+        }
+
+        .trap {
+            background-image: url('./Trap.jpg');
+        }
+
+        .pirate-related {
+            background-image: url('./no treasure.jpg'); 
+        }
+        
+        .location {
+            width: 65px;
+            height: 65px;
+            border: 1px solid black;
+            text-align: center;
+            background-image: url('./hiddentreasure.jpg');
+            background-size: cover;
+        }
+        .treasure {
+            background-image: url('./treasure.jpg'); 
+        }
+
+        .trap {
+            background-image: url('./Trap.jpg');
+        }
+
+        .pirate-related {
+            background-image: url('./no treasure.jpg'); 
+        }
+          </style>
+</head>
+
+
+   
+    <script>
+         const ids = [];
+        for (let i = 0; i < 25; i++) {
+            ids.push(`image${i}`);
+        }
+
+         checkCount = 0;
+         penalty = 0;
+         lastCheck = 0;
+        const treasureLocation = 5;
+        const trapLocation = 18;
+
+        
+         gameOver = false;
+
+       
+        function check(position) {
+            if (gameOver) return; 
+
+            const id = ids[position]; 
+            const imageElement = document.getElementById(id); 
+
+            if (position === treasureLocation) {
+                imageElement.src = "./treasure.jpg"; 
+                gameOver = true; 
+                penalty -= 3; 
+            } else if (position === trapLocation) {
+                imageElement.src = "Trap.jpg"; 
+                gameOver = true; 
+                penalty += 4; 
+            } else {
+                imageElement.src = "no treasure.jpg"; 
+                penalty += 1; 
+            }
+
+            checkCount++; 
+            const locationsElement = document.getElementById("locations"); 
+            locationsElement.textContent = `Locations: ${checkCount}`;
+
+            const penaltyElement = document.getElementById("penalty"); 
+            penaltyElement.textContent = `Penalty: ${penalty}`;
+
+            lastCheck = position; 
+        }
+
+        
+        function help() {
+            if (gameOver) return;
+
+            const rowCol = (position) => {
+                return { row: Math.floor(position / 5), col: position % 5 };
+            };
+
+            const lastPos = rowCol(lastCheck);
+            const treasurePos = rowCol(treasureLocation);
+
+            const rowDiff = Math.abs(lastPos.row - treasurePos.row);
+            const colDiff = Math.abs(lastPos.col - treasurePos.col);
+
+            if (rowDiff <= 1 && colDiff <= 1) {
+                
+                penalty += 2;
+                const penaltyElement = document.getElementById("penalty");
+                penaltyElement.textContent = `Penalty: ${penalty}`;
+                document.getElementById("help").textContent = "Can smell it";
+            } else if (rowDiff + colDiff === 2) {
+                
+                penalty += 2;
+                const penaltyElement = document.getElementById("penalty");
+                penaltyElement.textContent = `Penalty: ${penalty}`;
+                document.getElementById("help").textContent = "Close Matie";
+            } else {
+               
+                document.getElementById("help").textContent = "Step Faster";
+            }
+        }
+
+        
+        document.getElementById("help").onclick = help;       
+    </script>
+
+<body>
+    <h1>Find the Treasure by Allam Vikas
+
+    </h1>
+    
+    <div id="instructions">
+        <p>Click on the locations to search for treasure and beware of the traps.</p>
+    </div>
+    <div id="locations">Number of locations checked is zero.</div>
+    <div id="penalty">Penalty is zero.</div>
+    <div id="help">
+        <p>Click for help.</p>
+        
+    </div>
+    <div id="helpReport">
+        <p>helpReport</p>
+    </div>
+    <div class="container">
+    <div class="grid" text-align="center">
+        <div class="row">
+        <div class="col"> <img id="image0" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(0)"> </div>
+        <div class="col">  <img id="image1" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(1)"></div>
+        <div class="col"><img id="image2" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(2)"></div>
+        <div class="col"><img id="image3" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(3)"></div>
+        <div class="col"><img id="image4" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(4)"></div>
+        </div>
+
+  
+
+
+
+        <div class="row"> 
+            <div class="col">  <img id="image5" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(5)"></div>
+        <div class="col"> <img id="image6" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(6)"> </div>
+        <div class="col"> <img id="image7" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(7)"></div>
+        <div class="col"><img id="image8" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(8)"> </div>
+        <div class="col"><img id="image9" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(9)"> </div>
+        </div>
+
+      <div class="row"> 
+        <div class="col"> <img id="image10" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(10)"></div>
+        <div class="col"> <img id="image11" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(11)"></div>
+        <div class="col"> <img id="image12" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(12)"></div>
+        <div class="col"><img id="image13" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(13)"> </div>
+        <div class="col"><img id="image14" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(14)"> </div>
+        </div>
+        <div class="row">
+        <div class="col"> <img id="image15" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(15)"></div>
+        <div class="col"> <img id="image16" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(16)"></div>
+        <div class="col"> <img id="image17" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(17)"></div>
+        <div class="col"> <img id="image18" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(18)"></div>
+        <div class="col"> <img id="image19" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(19)"></div>
+</div>
+
+        <div class="row">
+            <div class="col"> <img id="image20" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(20)"> </div>
+        <div class="col"><img id="image21" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(21)"> </div>
+        <div class="col"> <img id="image22" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(22)"></div>
+        <div class="col"> <img id="image23" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(23)"></div>
+        <div class="col"> <img id="image24" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(24)"></div>
+
+    </div>
+    </div>
+
+</body>
+</html>
