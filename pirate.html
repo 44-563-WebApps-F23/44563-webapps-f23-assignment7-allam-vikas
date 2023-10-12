@@ -170,8 +170,16 @@
         }
 
         
-        document.getElementById("help").onclick = help;       
+        document.getElementById("help").onclick = help();   
+        
+        //var treasureLocation= math.floor(math.random()*(25-0)-0);
+        //var trapLocation= math.floor(math.random()*(25-0)-0);
+        function refresh(){
+        window.location.reload("Refresh")
+    }
     </script>
+
+    
 
 <body>
     <h1>Find the Treasure by Allam Vikas
@@ -184,7 +192,7 @@
     <div id="locations">Number of locations checked is zero.</div>
     <div id="penalty">Penalty is zero.</div>
     <div id="help">
-        <p>Click for help.</p>
+        <p onclick="help()">Click for help.</p>
         
     </div>
     <div id="helpReport">
@@ -195,7 +203,7 @@
         <div class="row">
         <div class="col"> <img id="image0" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(0)"> </div>
         <div class="col">  <img id="image1" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(1)"></div>
-        <div class="col"><img id="image2" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(2)"></div>
+        <div class="col"> <img id="image2" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(2)"></div>
         <div class="col"><img id="image3" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(3)"></div>
         <div class="col"><img id="image4" src="./hiddentreasure.jpg" height="67" width="75" alt="location" onclick="check(4)"></div>
         </div>
@@ -236,6 +244,7 @@
 
     </div>
     </div>
+    <p><input type="button" class="btn btn danger" value="New Game" onclick="refresh(this)"></p>
 
 </body>
 </html>
